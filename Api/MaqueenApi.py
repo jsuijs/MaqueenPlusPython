@@ -147,3 +147,11 @@ def mostotCompensation(direction, speed):
         buf[0] = 0x09
         buf[1] = speed
         i2c.write(I2caddr, buf)
+
+
+def GetEncoders():
+    buf = bytearray(1)
+    buf[0] = 0x04
+    i2c.write(I2caddr, buf)
+    return struct.unpack('>HH', i2c.read(I2caddr, 4))
+
