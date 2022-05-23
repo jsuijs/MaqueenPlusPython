@@ -3,12 +3,14 @@ from microbit import *
 from MaqueenApi import *
 from Robot import *
 
-def StateWachtA(S):
+def SequenceWachtA(S):
+    if S.IsNewState('SequenceWachtA') :
+      pass
     if pin5.read_digital() == False:
         S.Goto(StateRed)
 
 def StateRed(S):
-    if S.NewState :
+    if S.IsNewState('StateRed') :
         RGB(1, 1)
 
     if S.StateTime(2000) :
@@ -17,24 +19,22 @@ def StateRed(S):
     return
 
 def StateBlue(S):
-    if S.NewState :
+    if S.IsNewState('StateBlue') :
         RGB(7, 7)
 
     if S.StateTime(2000) :
         RGB(0,0)
-        S.Goto(StateDone)
+        S.IsDone = True
     return
 
 # ------------------------------------------------------------------------------
 # start van main
 # ------------------------------------------------------------------------------
-Sm = StateMachine()
-
-Sm.Goto(StateWachtA)
+Sm = StateMachine(SequenceWachtA)
 
 print("Begin")
 # voer statemachine uit zolang deze nog niet 'Done' is
-while Sm.Done == False:
+while Sm.IsDone == False:
     Sm.Takt()
 
 print("Einde")

@@ -15,13 +15,13 @@ class StateMachine:
       return self._NewState
 
    def Goto(self, NextState):
-      print("Goto")
+      print("Goto ", end='')
       self._StartMs     = utime.ticks_ms()
       self._PreNewState = True
       self._ActiveState = NextState
 
    def GoSub(self, ViaState, NextState):
-      print("GoSub")
+      print("GoSub ", end='')
       self._SubS        = StateMachine(ViaState)
       self._NextState   = NextState
 
