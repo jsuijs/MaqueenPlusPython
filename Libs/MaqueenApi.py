@@ -27,7 +27,8 @@ def motorState(direction):
     elif  direction == 2:
         return motorSpeed_d[2]
 
-# PID parameters opeen:0 close:1
+# PID parameters enable (closed loop) or disable (open loop)
+# Note: enabling PID may cause i2c errors...
 def PID(switch):
     buf = bytearray(2)
     buf[0] = 0x0A
@@ -129,9 +130,9 @@ def motor(directionL, speedL, directionR, speedR):
     buf = bytearray(5)
     buf[0] = 0x00
     buf[1] = directionL
-    buf[2] = speedL
+    buf[2] = int(speedL)
     buf[3] = directionR
-    buf[4] = speedR
+    buf[4] = int(speedR)
     i2c.write(I2caddr, buf)
 
 # Motor compensation is used to adjust small differences in speed between motors

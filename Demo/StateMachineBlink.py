@@ -1,31 +1,28 @@
 # StateMachineBlink - State machine demo met blink & start-knop
 from microbit import *
-from MaqueenApi import *
 from Robot import *
 
 def SequenceWachtA(S):
     if S.IsNewState('SequenceWachtA') :
       pass
+
     if pin5.read_digital() == False:
-        S.Goto(StateRed)
+        S.Goto(StateLarge)
 
-def StateRed(S):
-    if S.IsNewState('StateRed') :
-        RGB(1, 1)
+def StateLarge(S):
+   if S.IsNewState('StateLarge') :
+      display.show(Image.HEART)
 
-    if S.StateTime(2000) :
-        RGB(0,0)
-        S.Goto(StateBlue)
-    return
+   if S.StateTime(1000) :
+        S.Goto(StateSmall)
 
-def StateBlue(S):
-    if S.IsNewState('StateBlue') :
-        RGB(7, 7)
+def StateSmall(S):
+    if S.IsNewState('StateSmall') :
+       display.show(Image.HEART_SMALL)
 
-    if S.StateTime(2000) :
-        RGB(0,0)
-        S.IsDone = True
-    return
+    if S.StateTime(1000) :
+        display.clear()
+        S.Return()
 
 # ------------------------------------------------------------------------------
 # start van main
@@ -34,7 +31,5 @@ Sm = StateMachine(SequenceWachtA)
 
 print("Begin")
 # voer statemachine uit zolang deze nog niet 'Done' is
-while Sm.IsDone == False:
+while Sm.IsDone() == False:
     Sm.Takt()
-
-print("Einde")
