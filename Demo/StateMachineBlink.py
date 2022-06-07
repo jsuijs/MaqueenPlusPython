@@ -7,18 +7,18 @@ def SequenceWachtA(S):
       pass
 
     if pin5.read_digital() == False:
-        S.Goto(StateLarge)
-
-def StateLarge(S):
-   if S.IsNewState('StateLarge') :
-      display.show(Image.HEART)
-
-   if S.StateTime(1000) :
         S.Goto(StateSmall)
 
 def StateSmall(S):
-    if S.IsNewState('StateSmall') :
-       display.show(Image.HEART_SMALL)
+   if S.IsNewState('StateSmall') :
+      display.show(Image.HEART_SMALL)
+
+   if S.StateTime(1000) :
+        S.Goto(StateLarge)
+
+def StateLarge(S):
+    if S.IsNewState('StateLarge') :
+       display.show(Image.HEART)
 
     if S.StateTime(1000) :
         display.clear()

@@ -6,9 +6,11 @@ I2caddr = 0x10
 class StateMachine:
 
    def __init__(self, StartState):
+      self.TaktInterval = 0      # in ms
       self._States      = [StartState]
       self._PreNewState = True
       self._NewState    = True
+      self._LastTaktMs  = 0
 
    # Goto - Execute NextState (leave current state)
    def Goto(self, NextState):
@@ -37,6 +39,12 @@ class StateMachine:
       self._PreNewState = True
 
    def Takt(self):
+
+      if utime.ticks_ms() - (self.TaktInterval + self._LastTaktMs) < 0 :
+         return # not yet time for next takt execution
+
+      self._LastTaktMs = utime.ticks_ms()
+
       if len(self._States) == 0:
          print('Takt error - no more states')
          return
@@ -44,7 +52,7 @@ class StateMachine:
       # execute state
       self._PreNewState = False
       if self._NewState:
-         self._StartMs = utime.ticks_ms()
+         self._StateStartMs = utime.ticks_ms()
       self._States[-1](self)
       self._NewState = self._PreNewState
 
@@ -60,7 +68,7 @@ class StateMachine:
 
    # StateTime - returns true when we're more than Delay in the current state
    def StateTime(self, Delay):
-      return (utime.ticks_ms() - (self._StartMs + Delay)) > 0
+      return (utime.ticks_ms() - (self._StateStartMs + Delay)) > 0
 
 class MaqueenPlus:
 
