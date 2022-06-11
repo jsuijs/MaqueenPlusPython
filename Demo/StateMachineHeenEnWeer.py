@@ -5,6 +5,7 @@ from Robot import *
 def SequenceWachtA(S):  # Sequence naam betekent de eerste state van een serie
     if S.IsNewState('SequenceWachtA') :
         Mq.RGB(1, 1)
+        Mq.Motors(0, 0)
 
     if pin5.read_digital() == False:
         S.Goto(StateWacht1s)
@@ -15,37 +16,33 @@ def StateWacht1s(S):
 
     if S.StateTime(1000) :
         S.Return() # einde van sequence
-    return
-
-def SequenceHeenEnWeer(S):
-    print('aap')
-    if S.IsNewState('SequenceHeenEnWeer') :
-        pass
-    S.GoSub(SequenceWachtA, StateRijVoorwaards);
 
 def StateRijVoorwaards(S):
     if S.IsNewState('StateRijVoorwaards') :
-        Mq.RGB(4,4)
-        Mq.Motors(100, 100)
+        Mq.RGB(4, 4)
+        Mq.DistanceSpeed(100, 1500)
 
-    print(Mq.GetEncoders())
-
-    if S.StateTime(5000) :
-        Mq.RGB(0,0)
+    if Mq.IsDone() :
         Mq.Motors(0, 0)
         S.Return()
-    return
+
+def StateDraai180(S):
+    if S.IsNewState('StateDraai180') :
+        Mq.DistanceSpeedLR(40, -40, 162)
+
+    if Mq.IsDone() :
+        Mq.Motors(0, 0)
+        S.Return()
 
 # ------------------------------------------------------------------------------
 # start van main
 # ------------------------------------------------------------------------------
-Sm = StateMachine()
-Sm.Goto(SequenceHeenEnWeer)
-
 Mq = MaqueenPlus()
+Sm = StateMachine()
 
 print("Begin")
-# voer statemachine uit zolang deze nog niet 'Done' is
+Sm.GoSub(SequenceWachtA, [StateRijVoorwaards, StateDraai180, StateRijVoorwaards])
+
 while Sm.IsDone() == False:
     Sm.Takt()
 

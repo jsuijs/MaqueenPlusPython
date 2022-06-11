@@ -172,7 +172,6 @@ class MaqueenPlus:
          CurHeading = CurrentL - CurrentR
          Correction = (self.HeadingSp - CurHeading) * 5.0
          self.Motors(self.SpeedSp + Correction, self.SpeedSp - Correction)
-
-      print("Correction", Correction)
+         #print("Correction", Correction)
 
       return (CurrentL + CurrentR) >= self.EndPoint
