@@ -27,7 +27,8 @@ def StateLarge(S):
 # ------------------------------------------------------------------------------
 # start van main
 # ------------------------------------------------------------------------------
-Sm = StateMachine(SequenceWachtA)
+Sm = StateMachine()
+Sm.Goto(SequenceWachtA)
 
 print("Begin")
 # voer statemachine uit zolang deze nog niet 'Done' is
