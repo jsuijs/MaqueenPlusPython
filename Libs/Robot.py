@@ -128,7 +128,7 @@ class MaqueenPlus:
    # Motors - set motors to speeds specified, negative = reverse
    def Motors(self, SpeedL, SpeedR):
 
-      print("Motors", SpeedL, SpeedR)
+      #print("Motors", SpeedL, SpeedR)
 
       if SpeedL > 0 :
          DirL     = 1
