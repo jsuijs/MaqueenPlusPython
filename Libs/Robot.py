@@ -13,9 +13,9 @@ class StateMachine:
       self._LastTaktMs  = 0
 
    # Goto - Execute NextState (leave current state)
-   def Goto(self, NextState, Silent=False):
-      if Silent == False : print("Goto ", end='')
-      self.Return(True) # silent return
+   def Goto(self, NextState):
+      print("Goto ", end='')
+      self.Return(True) # remove current active state (if any) without message
 
       # NextState can be a function or list of functions
       if isinstance(NextState, list) :
@@ -23,19 +23,6 @@ class StateMachine:
             self._States.append(S)        # add new items in reverse order
       else :
          self._States.append(NextState)   # add new item
-
-   # Gosub - Execute ViaState and then return to NextState (leave current state)
-   def GoSub(self, ViaState, NextState):
-      print("GoSub ", end='')
-      self.Goto(NextState, True)          # Silent Goto
-
-      # ViaState can be a function or list of functions
-      if isinstance(ViaState, list) :
-         for S in reversed(ViaState) :
-            self._States.append(S)        # add new items in reverse order
-      else :
-         self._States.append(ViaState)    # add new item
-
 
    # Return - Return to previous state in list (leave current state)
    #          note: when list is empty, IsDone() is true
