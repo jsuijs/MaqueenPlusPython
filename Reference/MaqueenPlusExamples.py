@@ -456,7 +456,11 @@ while True:
 
 print('# based on mu\modes\examples\maqueenplus.py')
 for e in  MAQUEENPLUS_EXAMPLES :
-   print('# file:', e)
-   print('# description:', MAQUEENPLUS_EXAMPLES[e]['description'])
-   print(MAQUEENPLUS_EXAMPLES[e]['code'])
+   f = open(e, "w")
+   f.write('#---\n')
+   f.write('# file: %s\n' % e)
+   f.write('# description: %s\n' % MAQUEENPLUS_EXAMPLES[e]['description'])
+   f.write('#---\n')
+   f.write(MAQUEENPLUS_EXAMPLES[e]['code'])
+   f.close()
 
